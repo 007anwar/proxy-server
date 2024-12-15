@@ -1,0 +1,20 @@
+server:
+  port: 7000  # Port for Gateway Service
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: product-service-route
+          uri: lb://product-service  # Use the service name registered in Eureka
+          predicates:
+            - Path=/product-service/**  # Forward requests with this path
+          filters:
+            - StripPrefix=1  # Removes "/product-service" before forwarding
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/  # Eureka Server URL
